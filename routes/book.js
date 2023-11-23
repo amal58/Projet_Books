@@ -8,6 +8,9 @@ router.get("/",bookController.fetchBooks)
   
   
   router.post("/",bookController.addBook)
+
+  // Route avec validation spécifique
+  router.post('/add', bookController.addBookWithValidation);
    
 
 //modifier

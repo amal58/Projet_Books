@@ -59,6 +59,37 @@ const Book=require("../models/Book")
         });
       });
   }
+ 
+  const addBookWithValidation = async (req, res) => {
+    try {
+      const book = new Book(req.body);
+  
+      // Valider le livre avec mongoose
+      await book.validate();
+  
+      // Vérifier si l'auteur a déjà écrit d'autres livres
+      const count = await Book.countDocuments({ author: book.author });
+      if (count > 0) {
+        // L'auteur a déjà écrit d'autres livres, sauvegarder le nouveau livre
+        await book.save();
+        res.status(201).json({
+          model: book,
+          message: 'Livre créé!',
+        });
+      } else {
+        // L'auteur n'a pas encore écrit d'autres livres
+        res.status(400).json({
+          message: 'L\'auteur doit avoir écrit d\'autres livres avant de créer celui-ci.',
+        });
+      }
+    } catch (error) {
+      res.status(400).json({
+        error: error.message,
+        message: 'Données invalides',
+      });
+    }
+  };
+  
 //modifier
 const UpdateBook=(req, res) => {
     Book.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
@@ -113,6 +144,7 @@ const DeleteBook=(req, res) => {
 };
 
  module.exports={
+  addBookWithValidation:addBookWithValidation,
     getBookbyauthor:getBookbyauthor,
     fetchBooks:fetchBooks,
     addBook:addBook,

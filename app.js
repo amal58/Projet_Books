@@ -5,7 +5,7 @@ const bookRoutes=require("./routes/book")
 const userRoutes=require("./routes/user")
 const authorRoutes=require("./routes/author")
 const categoryRoutes=require("./routes/category")
-
+const eventRoutes = require('./routes/eventRoutes');
 const mongoose = require('mongoose')
 
 mongoose
@@ -22,31 +22,11 @@ mongoose
 
   app.use(express.json())
 
-/*
-app.use((req,res,next)=>{
-    console.log("requete recue")
-    next()
-})
-app.use((req,res,next)=>{
-    res.status(201)
-    next()
-})
 
-
-app.use((req,res,next)=>{
-    res.json({message:"votre requ bien recue"})
-    next()
-})
-
-app.use((req,res,next)=>{
-    console.log("reponse envoyee avec succes")
-   
-})
-
-*/
 app.use("/api/tasks",taskRoutes)
 app.use("/api/books",bookRoutes)
 app.use("/api/auth",userRoutes)
 app.use("/api/categories",categoryRoutes)
 app.use("/api/authors",authorRoutes)
+app.use('/api/events', eventRoutes);
 module.exports=app
