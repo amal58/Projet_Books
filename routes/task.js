@@ -2,6 +2,7 @@ const express=require("express")
 const router =express.Router()
 const taskController = require("../controllers/task")
 const auth=require ("../middlewares/auth")
+
 router.get("/",auth.loggedMiddleware,taskController.fetchTasks)
   
   router.get("/:id",taskController.getTaskById)

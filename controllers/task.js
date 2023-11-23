@@ -19,6 +19,7 @@ const fetchTasks =(req,res)=>{
     });
  
   }
+
   const getTaskById=(req,res)=>{
     Task.findOne({_id:req.params.id})
     .then((task) => {
@@ -43,25 +44,46 @@ const fetchTasks =(req,res)=>{
    });
   }
   
-  const addTask=(req,res)=>{
-      console.log(req.body)
-      const task=new Task(req.body)
-      //fonction async ,promise
-      task.save().then(()=>
-      res.status(201).json({
-        model:task,
-        message:"objet cree!",
-      })
-      )
-      .catch((error) => {
+  // const addTask=(req,res)=>{
+  //     console.log(req.body)
+  //     const task=new Task(req.body)
+  //     //fonction async ,promise
+  //     task.save().then(()=>
+  //     res.status(201).json({
+  //       model:task,
+  //       message:"objet cree!",
+  //     })
+  //     )
+  //     .catch((error) => {
     
-        res.status(400).json({
-          error: error.message,
-          message:"donnees invalides",
-        });
+  //       res.status(400).json({
+  //         error: error.message,
+  //         message:"donnees invalides",
+  //       });
+  //     });
+  //  }
+
+
+   //add task avec async await
+  
+   const addTask = async (req, res) => {
+    console.log(req.body);
+    const task = new Task(req.body);
+    
+    try {
+      await task.save();
+      res.status(201).json({
+        model: task,
+        message: "objet cree!",
       });
-      
-   }
+    } catch (error) {
+      res.status(400).json({
+        error: error.message,
+        message: "donnees invalides",
+      });
+    }
+  }
+  
 
 //modifier
 const UpdateTask=(req,res)=>{

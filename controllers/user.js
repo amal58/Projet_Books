@@ -17,8 +17,11 @@ bcrypt
     user
     .save()
     .then((response)=>{
-        const newUser=response.toObject()
-        delete newUser.password
+         // Utiliser la méthode toPublic pour obtenir les données publiques de l'utilisateur et supp mdp et ajouter name virtual
+         const newUser = response.toPublic();
+
+        // const newUser=response.toObject()
+        // delete newUser.password
         res.status(201).json({
             model:newUser,
             message:"utilisateur cree ",

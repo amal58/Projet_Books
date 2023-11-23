@@ -16,6 +16,7 @@ router.patch("/:id",bookController.UpdateBook)
 
 router.delete("/:id",bookController.DeleteBook)
 
+router.get("/author/:id",bookController.getBookbyauthor)
 
 
     module.exports=router

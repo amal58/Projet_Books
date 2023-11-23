@@ -1,7 +1,4 @@
 const Book=require("../models/Book")
-
-
-
       const fetchBooks = (req, res) => {
         Book.find()
           .populate("author")  
@@ -20,8 +17,6 @@ const Book=require("../models/Book")
           });
       }
 
-  
-  
   const getBookById = (req, res) => {
     Book.findOne({ _id: req.params.id })
       .populate("author")  
@@ -47,9 +42,6 @@ const Book=require("../models/Book")
       });
   }
   
-
-
-  
   const addBook=(req, res) => {
     const book = new Book(req.body);
     book
@@ -67,7 +59,6 @@ const Book=require("../models/Book")
         });
       });
   }
-
 //modifier
 const UpdateBook=(req, res) => {
     Book.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
@@ -90,8 +81,6 @@ const UpdateBook=(req, res) => {
         })
       );
   }
-
-
 const DeleteBook=(req, res) => {
     Book.deleteOne({ _id: req.params.id })
       .then(() => res.status(200).json({ message: "Book  deleted" }))
@@ -102,8 +91,29 @@ const DeleteBook=(req, res) => {
         });
       });
   }
+  // Nouvelle route pour obtenir tous les livres d'un auteur
+  const getBookbyauthor=(req, res) => {
+  const authorId = req.params.id;
+
+  Book.findByAuthor(authorId)
+    .populate('author')
+    .populate('categories')
+    .then((books) => {
+      res.status(200).json({
+        model: books,
+        message: 'Livres de l\'auteur récupérés avec succès',
+      });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        error: error.message,
+        message: 'Problème lors de la récupération des livres de l\'auteur',
+      });
+    });
+};
 
  module.exports={
+    getBookbyauthor:getBookbyauthor,
     fetchBooks:fetchBooks,
     addBook:addBook,
     getBookById:getBookById,
