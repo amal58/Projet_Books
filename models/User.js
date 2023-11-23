@@ -6,8 +6,9 @@ const userSchema = mongoose.Schema({
     password: { type: String, required: true },
     lastname:{type: String, required: true,},
     firstname:{type: String, required: true,},
-   
   role:{type:String ,enum:["admin","user"],default:"user"},
+  }, {
+    timestamps: true,
   });
 
   // Ajouter un champ virtuel "name"
@@ -21,6 +22,10 @@ userSchema.methods.toPublic = function () {
   userObject.name = this.name;
   return userObject;
 };
+
+userSchema.set('toJSON', { virtuals: true });
+userSchema.set('toObject', { virtuals: true });
+
 
   //userSchema.plugin(uniqueValidator);
   module.exports = mongoose.model("User", userSchema);
